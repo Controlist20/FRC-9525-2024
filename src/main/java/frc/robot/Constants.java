@@ -42,13 +42,17 @@ public final class Constants {
 
     // Speeds for wheels when intaking and launching. Intake speeds are negative to run the wheels
     // in reverse
-    public static final double kLauncherSpeed = -1;
-    public static final double kSlowLauncherSpeed = 0.3;
-    public static final double kLaunchFeederSpeed = -1;
     public static final double kIntakeLauncherSpeed = 1;
+    public static final double kLauncherSpeed = -1;
+
     public static final double kIntakeFeederSpeed = 1;
+    public static final double kLaunchFeederSpeed = -1;
 
     public static final double kLauncherDelay = 1.5;
+
+    // Slower speeds for launch
+    public static final double kSlowLauncherSpeed = -0.28;
+    public static final double kSlowLaunchFeederSpeed = -0.5;
   }
 
   public static class AutoConstants{

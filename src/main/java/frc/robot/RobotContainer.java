@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import static frc.robot.Constants.LauncherConstants.kLauncherSpeed;
-import static frc.robot.Constants.LauncherConstants.kSlowLauncherSpeed;
-
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,6 +13,7 @@ import frc.robot.Constants.LauncherConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.LaunchNote;
+import frc.robot.commands.SlowLaunchNote;
 import frc.robot.commands.PrepareLaunch;
 import frc.robot.subsystems.PWMDrivetrain;
 import frc.robot.subsystems.PWMLauncher;
@@ -96,10 +94,12 @@ public class RobotContainer {
         .a()
         .onTrue(
             new PrepareLaunch(m_launcher)
+                // .andThen(() -> {
+                //   m_launcher.setLaunchWheel(LauncherConstants.kLauncherSpeed);
+                //   m_launcher.setFeedWheel(LauncherConstants.kLaunchFeederSpeed);
+                // }) // Set the launch wheel speed to the slow speed value   
                 .withTimeout(LauncherConstants.kLauncherDelay)
-                .andThen(new LaunchNote(m_launcher))
-                .andThen(() -> m_launcher.setLaunchWheel(kLauncherSpeed))
-                .withTimeout(2)
+                .andThen(new LaunchNote(m_launcher))             .withTimeout(2)
                 .andThen(() -> m_launcher.stop())
                 .handleInterrupt(() -> m_launcher.stop()));
     
@@ -108,12 +108,15 @@ public class RobotContainer {
     .x()
     .onTrue(
         new PrepareLaunch(m_launcher)
+            // .andThen(() -> {
+            //   m_launcher.setLaunchWheel(LauncherConstants.kSlowLauncherSpeed);
+            //   m_launcher.setFeedWheel(LauncherConstants.kSlowLaunchFeederSpeed);
+            // }) // Set the launch wheel speed to the slow speed value
             .withTimeout(LauncherConstants.kLauncherDelay)
-            .andThen(new LaunchNote(m_launcher))
-            .andThen(() -> m_launcher.setLaunchWheel(kSlowLauncherSpeed)) // Set the launch wheel speed to the slow speed value
+            .andThen(new SlowLaunchNote(m_launcher))
             .withTimeout(2)
             .andThen(() -> m_launcher.stop())
-            .handleInterrupt(() -> m_launcher.stop()));
+            .handleInterrupt(() -> m_launcher.stop())); 
 
 
     // Set up a binding to run the intake command while the operator is pressing and holding the
