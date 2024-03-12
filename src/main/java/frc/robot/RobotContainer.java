@@ -4,8 +4,8 @@
 
 package frc.robot;
 
-import static frc.robot.Constants.LauncherConstants.kIntakeSlowLauncherSpeed;
-import static frc.robot.Constants.LauncherConstants.kIntakeLauncherSpeed;
+import static frc.robot.Constants.LauncherConstants.kLauncherSpeed;
+import static frc.robot.Constants.LauncherConstants.kSlowLauncherSpeed;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -98,7 +98,7 @@ public class RobotContainer {
             new PrepareLaunch(m_launcher)
                 .withTimeout(LauncherConstants.kLauncherDelay)
                 .andThen(new LaunchNote(m_launcher))
-                .andThen(() -> m_launcher.setLaunchWheel(kIntakeLauncherSpeed))
+                .andThen(() -> m_launcher.setLaunchWheel(kLauncherSpeed))
                 .withTimeout(2)
                 .andThen(() -> m_launcher.stop())
                 .handleInterrupt(() -> m_launcher.stop()));
@@ -110,7 +110,7 @@ public class RobotContainer {
         new PrepareLaunch(m_launcher)
             .withTimeout(LauncherConstants.kLauncherDelay)
             .andThen(new LaunchNote(m_launcher))
-            .andThen(() -> m_launcher.setLaunchWheel(kIntakeSlowLauncherSpeed)) // Set the launch wheel speed to the slow speed value
+            .andThen(() -> m_launcher.setLaunchWheel(kSlowLauncherSpeed)) // Set the launch wheel speed to the slow speed value
             .withTimeout(2)
             .andThen(() -> m_launcher.stop())
             .handleInterrupt(() -> m_launcher.stop()));
