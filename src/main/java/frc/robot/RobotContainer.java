@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import static frc.robot.Constants.LauncherConstants.kIntakeSlowLauncherSpeed;
+import static frc.robot.Constants.LauncherConstants.kIntakeLauncherSpeed;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -95,11 +98,7 @@ public class RobotContainer {
             new PrepareLaunch(m_launcher)
                 .withTimeout(LauncherConstants.kLauncherDelay)
                 .andThen(new LaunchNote(m_launcher))
-                .andThen(() -> {
-                  double normalSpeed = -1; // Example normal speed value
-                  m_launcher.setLaunchWheel(normalSpeed); // Set the launch wheel speed to the normal speed value
-                  m_launcher.setFeedWheel(normalSpeed); // Set the feed wheel speed to the normal speed value
-                })
+                .andThen(() -> m_launcher.setLaunchWheel(kIntakeLauncherSpeed))
                 .withTimeout(2)
                 .andThen(() -> m_launcher.stop())
                 .handleInterrupt(() -> m_launcher.stop()));
@@ -111,11 +110,7 @@ public class RobotContainer {
         new PrepareLaunch(m_launcher)
             .withTimeout(LauncherConstants.kLauncherDelay)
             .andThen(new LaunchNote(m_launcher))
-            .andThen(() -> {
-              double slowSpeed = -0.3; // Example slow speed value
-              m_launcher.setLaunchWheel(slowSpeed); // Set the launch wheel speed to the slow speed value
-              m_launcher.setFeedWheel(slowSpeed); // Set the feed wheel speed to the slow speed value
-            })
+            .andThen(() -> m_launcher.setLaunchWheel(kIntakeSlowLauncherSpeed)) // Set the launch wheel speed to the slow speed value
             .withTimeout(2)
             .andThen(() -> m_launcher.stop())
             .handleInterrupt(() -> m_launcher.stop()));
