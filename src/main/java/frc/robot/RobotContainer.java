@@ -95,9 +95,31 @@ public class RobotContainer {
             new PrepareLaunch(m_launcher)
                 .withTimeout(LauncherConstants.kLauncherDelay)
                 .andThen(new LaunchNote(m_launcher))
+                .andThen(() -> {
+                  double normalSpeed = -1; // Example normal speed value
+                  m_launcher.setLaunchWheel(normalSpeed); // Set the launch wheel speed to the normal speed value
+                  m_launcher.setFeedWheel(normalSpeed); // Set the feed wheel speed to the normal speed value
+                })
                 .withTimeout(2)
                 .andThen(() -> m_launcher.stop())
                 .handleInterrupt(() -> m_launcher.stop()));
+    
+    // Set up a binding to change the speed of the intake command when the operator presses the X button
+    m_operatorController
+    .x()
+    .onTrue(
+        new PrepareLaunch(m_launcher)
+            .withTimeout(LauncherConstants.kLauncherDelay)
+            .andThen(new LaunchNote(m_launcher))
+            .andThen(() -> {
+              double slowSpeed = -0.3; // Example slow speed value
+              m_launcher.setLaunchWheel(slowSpeed); // Set the launch wheel speed to the slow speed value
+              m_launcher.setFeedWheel(slowSpeed); // Set the feed wheel speed to the slow speed value
+            })
+            .withTimeout(2)
+            .andThen(() -> m_launcher.stop())
+            .handleInterrupt(() -> m_launcher.stop()));
+
 
     // Set up a binding to run the intake command while the operator is pressing and holding the
     // left Bumper
