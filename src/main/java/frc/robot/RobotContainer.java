@@ -91,10 +91,12 @@ public class RobotContainer {
      * command for 1 seconds and then run the LaunchNote command */
     m_operatorController
         .a()
-        .whileTrue(
+        .onTrue(
             new PrepareLaunch(m_launcher)
                 .withTimeout(LauncherConstants.kLauncherDelay)
                 .andThen(new LaunchNote(m_launcher))
+                .withTimeout(2)
+                .andThen(() -> m_launcher.stop())
                 .handleInterrupt(() -> m_launcher.stop()));
 
     // Set up a binding to run the intake command while the operator is pressing and holding the
