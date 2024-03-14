@@ -40,8 +40,13 @@ public final class Autos {
     
         // Launch the note
         new PrepareLaunch(launcher)
+                // .andThen(() -> {
+                //   m_launcher.setLaunchWheel(LauncherConstants.kLauncherSpeed);
+                //   m_launcher.setFeedWheel(LauncherConstants.kLaunchFeederSpeed);
+                // }) // Set the launch wheel speed to the slow speed value   
                 .withTimeout(LauncherConstants.kLauncherDelay)
-                .andThen(new LaunchNote(launcher))
+                .andThen(new LaunchNote(launcher)).withTimeout(2)
+                .andThen(() -> launcher.stop())
                 .handleInterrupt(() -> launcher.stop()),
 
         // Drive backward 
