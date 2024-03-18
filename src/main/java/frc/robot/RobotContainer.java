@@ -123,9 +123,6 @@ public class RobotContainer {
     //         .handleInterrupt(() -> m_launcher.stop())
     // ); 
     
-    //  *********************************
-    // BU FONKSIYONU TEKRAR KONTROL EDELIM 
-    //  *********************************
     // Set up a binding to run the intake command while the operator is pressing and holding the
     // left Bumper
     m_driverController
