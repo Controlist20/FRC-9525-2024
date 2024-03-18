@@ -31,28 +31,82 @@ public final class Autos {
         .andThen(new RunCommand(() -> drivetrain.arcadeDrive(0, 0), drivetrain));
   }
 
-   public static Command complexAuto(PWMDrivetrain drivetrain, PWMLauncher launcher) {
-    return Commands.sequence(
-        // Drive forward 
-        new RunCommand(() -> drivetrain.arcadeDrive(AutoConstants.kAutoDrivePower, 0), drivetrain)
-        .withTimeout(kAutoTimeout)
-        .andThen(new RunCommand(() -> drivetrain.arcadeDrive(0, 0), drivetrain)),
-    
-        // Launch the note
-        new PrepareLaunch(launcher)
-                // .andThen(() -> {
-                //   m_launcher.setLaunchWheel(LauncherConstants.kLauncherSpeed);
-                //   m_launcher.setFeedWheel(LauncherConstants.kLaunchFeederSpeed);
-                // }) // Set the launch wheel speed to the slow speed value   
-                .withTimeout(LauncherConstants.kLauncherDelay)
-                .andThen(new LaunchNote(launcher)).withTimeout(2)
-                .andThen(() -> launcher.stop())
-                .handleInterrupt(() -> launcher.stop()),
+    /** Example static factory for an autonomous command. */
+    public static Command simpleAuto(PWMDrivetrain drivetrain) {
+      return new RunCommand(() -> drivetrain.arcadeDrive(kAutoDrivePower, 0), drivetrain)
+          .withTimeout(kAutoTimeout)
+          .andThen(new RunCommand(() -> drivetrain.arcadeDrive(0, 0), drivetrain));
+    }
 
-        // Drive backward 
-        new RunCommand(() -> drivetrain.arcadeDrive(-AutoConstants.kAutoDrivePower, 0), drivetrain)
-        .withTimeout(kAutoTimeout)
-        .andThen(new RunCommand(() -> drivetrain.arcadeDrive(0, 0), drivetrain)));
+  public static Command shootAndSitAuto(PWMDrivetrain drivetrain, PWMLauncher launcher) {
+
+    return Commands.sequence(
+      // Drive forward 
+      // new RunCommand(() -> drivetrain.arcadeDrive(AutoConstants.kAutoDrivePower, 0), drivetrain)
+      //   .withTimeout(kAutoTimeout)
+      //   .andThen(new RunCommand(() -> drivetrain.arcadeDrive(0, 0), drivetrain)),
+  
+      // Launch the note
+      new PrepareLaunch(launcher)
+              .withTimeout(LauncherConstants.kLauncherDelay)
+              .andThen(new LaunchNote(launcher))
+              .withTimeout(LauncherConstants.kLauncherRunDuration)
+              .andThen(() -> launcher.stop())
+              .handleInterrupt(() -> launcher.stop())
+
+      // // Drive backward 
+      // new RunCommand(() -> drivetrain.arcadeDrive(-AutoConstants.kAutoDrivePower, 0), drivetrain)
+      // .withTimeout(kAutoTimeout)
+      // .andThen(new RunCommand(() -> drivetrain.arcadeDrive(0, 0), drivetrain))
+      );
+  }
+
+  public static Command shootAndDriveDiagonalBackwardAuto(PWMDrivetrain drivetrain, PWMLauncher launcher) {
+
+    return Commands.sequence(
+      // // Drive forward 
+      // new RunCommand(() -> drivetrain.arcadeDrive(AutoConstants.kAutoDrivePower, 0), drivetrain)
+      //   .withTimeout(kAutoTimeout)
+      //   .andThen(new RunCommand(() -> drivetrain.arcadeDrive(0, 0), drivetrain)),
+  
+      // Launch the note
+      new PrepareLaunch(launcher)
+              .withTimeout(LauncherConstants.kLauncherDelay)
+              .andThen(new LaunchNote(launcher))
+              .withTimeout(LauncherConstants.kLauncherRunDuration)
+              .andThen(() -> launcher.stop())
+              .handleInterrupt(() -> launcher.stop()),
+
+      // // Drive backward 
+      new RunCommand(() -> drivetrain.arcadeDrive(-0.7, 0), drivetrain)
+      .withTimeout(1.9*kAutoTimeout)
+      // .andThen(new RunCommand(() -> drivetrain.arcadeDrive(0.75, 0), drivetrain))
+
+      );
+  }
+
+    public static Command shootAndDriveStraightBackwardAuto(PWMDrivetrain drivetrain, PWMLauncher launcher) {
+
+    return Commands.sequence(
+      // // Drive forward 
+      // new RunCommand(() -> drivetrain.arcadeDrive(AutoConstants.kAutoDrivePower, 0), drivetrain)
+      //   .withTimeout(kAutoTimeout)
+      //   .andThen(new RunCommand(() -> drivetrain.arcadeDrive(0, 0), drivetrain)),
+  
+      // Launch the note
+      new PrepareLaunch(launcher)
+              .withTimeout(LauncherConstants.kLauncherDelay)
+              .andThen(new LaunchNote(launcher))
+              .withTimeout(LauncherConstants.kLauncherRunDuration)
+              .andThen(() -> launcher.stop())
+              .handleInterrupt(() -> launcher.stop()),
+
+      // // Drive backward 
+      new RunCommand(() -> drivetrain.arcadeDrive(-0.65, 0), drivetrain)
+      .withTimeout(1.3*kAutoTimeout)
+      // .andThen(new RunCommand(() -> drivetrain.arcadeDrive(0.75, 0), drivetrain))
+
+      );
   }
 
   private Autos() {

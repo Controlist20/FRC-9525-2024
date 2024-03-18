@@ -33,8 +33,8 @@ public class PWMLauncher extends SubsystemBase {
     return this.startEnd(
         // When the command is initialized, set the wheels to the intake speed values
         () -> {
-          setFeedWheel(kIntakeFeederSpeed);
-          setLaunchWheel(kIntakeLauncherSpeed);
+          setFeedWheel(kFeederIntakeSpeed);
+          setLaunchWheel(kLauncherIntakeSpeed);
         },
         // When the command stops, stop the wheels
         () -> {
@@ -42,12 +42,16 @@ public class PWMLauncher extends SubsystemBase {
         });
   }
 
-  // An accessor method to set the speed (technically the output percentage) of the launch wheel
+  /**
+   * An accessor method to set the speed (technically the output percentage) of the launch wheel
+  */
   public void setLaunchWheel(double speed) {
     m_launchWheel.set(speed);
   }
 
-  // An accessor method to set the speed (technically the output percentage) of the feed wheel
+  /**
+   * An accessor method to set the speed (technically the output percentage) of the feed wheel
+   */
   public void setFeedWheel(double speed) {
     m_feedWheel.set(speed);
   }

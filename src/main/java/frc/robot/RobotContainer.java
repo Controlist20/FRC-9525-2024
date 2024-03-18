@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -15,6 +16,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.LaunchNote;
 import frc.robot.commands.SlowLaunchNote;
 import frc.robot.commands.PrepareLaunch;
+import frc.robot.commands.PrepareSlowLaunch;
 import frc.robot.subsystems.PWMDrivetrain;
 import frc.robot.subsystems.PWMLauncher;
 
@@ -39,21 +41,22 @@ public class RobotContainer {
    * switch on the top.*/
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  private final CommandXboxController m_operatorController =
-      new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
-
-  // A simple auto routine that drives forward a specified distance, and then stops.
-  private final Command m_simpleAuto = Autos.exampleAuto(m_drivetrain);
+  // // A simple auto routine that drives forward a specified distance, and then stops.
+  // private final Command m_simpleAuto = Autos.exampleAuto(m_drivetrain);
 
    // A complex auto routine that drives forward, launches the hatch, and then drives backward.
-  private final Command m_complexAuto = Autos.complexAuto(m_drivetrain, m_launcher);
+  private final Command m_shootAndSitAuto = Autos.shootAndSitAuto(m_drivetrain, m_launcher);
 
+   // A complex auto routine that drives forward, launches the hatch, and then drives backward.
+  private final Command m_shootAndDriveDiagonalBackwardAuto = Autos.shootAndDriveDiagonalBackwardAuto(m_drivetrain, m_launcher);
+  // A complex auto routine that drives forward, launches the hatch, and then drives backward.
+  private final Command m_shootAndDriveStraightBackwardAuto = Autos.shootAndDriveStraightBackwardAuto(m_drivetrain, m_launcher);
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   
   // m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
-  // m_chooser.addOption("Complex Auto", m_complexAuto);
+  // m_chooser.addOption("Complex Auto", m_shootAndSitAuto);
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -61,17 +64,20 @@ public class RobotContainer {
     configureBindings();
 
     // Add commands to the autonomous command chooser
-    m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
-    m_chooser.addOption("Complex Auto", m_complexAuto);
+    m_chooser.setDefaultOption("Shoot and Sit Auto", m_shootAndSitAuto);
+    m_chooser.setDefaultOption("Shoot and Drive DiagonalBackward Auto", m_shootAndDriveDiagonalBackwardAuto);
+    m_chooser.setDefaultOption("Shoot and Drive Straight Backward Auto", m_shootAndDriveStraightBackwardAuto);
+
+    // m_chooser.addOption("Simple Auto", m_simpleAuto);
+
+    SmartDashboard.putData("Auto choices", m_chooser);
 
     // Put the chooser on the dashboard
-    Shuffleboard.getTab("Autonomous").add(m_chooser);
+    //Shuffleboard.getTab("Autonomous").add(m_chooser);
 
     // Put subsystems to dashboard.
     Shuffleboard.getTab("Drivetrain").add(m_drivetrain);
     Shuffleboard.getTab("Launcher").add(m_launcher);
-
-
   }
 
   /**
@@ -90,38 +96,41 @@ public class RobotContainer {
 
     /*Create an inline sequence to run when the operator presses and holds the A (green) button. Run the PrepareLaunch
      * command for 1 seconds and then run the LaunchNote command */
-    m_operatorController
+    m_driverController
         .a()
         .onTrue(
             new PrepareLaunch(m_launcher)
                 // .andThen(() -> {
-                //   m_launcher.setLaunchWheel(LauncherConstants.kLauncherSpeed);
-                //   m_launcher.setFeedWheel(LauncherConstants.kLaunchFeederSpeed);
+                //   m_launcher.setLaunchWheel(LauncherConstants.kLauncherLaunchSpeed);
+                //   m_launcher.setFeedWheel(LauncherConstants.kFeederLaunchSpeed);
                 // }) // Set the launch wheel speed to the slow speed value   
                 .withTimeout(LauncherConstants.kLauncherDelay)
-                .andThen(new LaunchNote(m_launcher))             .withTimeout(2)
+                .andThen(new LaunchNote(m_launcher))             
+                .withTimeout(LauncherConstants.kLauncherRunDuration)
                 .andThen(() -> m_launcher.stop())
-                .handleInterrupt(() -> m_launcher.stop()));
+                .handleInterrupt(() -> m_launcher.stop())
+        );
     
-    // Set up a binding to change the speed of the intake command when the operator presses the X button
-    m_operatorController
-    .x()
-    .onTrue(
-        new PrepareLaunch(m_launcher)
-            // .andThen(() -> {
-            //   m_launcher.setLaunchWheel(LauncherConstants.kSlowLauncherSpeed);
-            //   m_launcher.setFeedWheel(LauncherConstants.kSlowLaunchFeederSpeed);
-            // }) // Set the launch wheel speed to the slow speed value
-            .withTimeout(LauncherConstants.kLauncherDelay)
-            .andThen(new SlowLaunchNote(m_launcher))
-            .withTimeout(2)
-            .andThen(() -> m_launcher.stop())
-            .handleInterrupt(() -> m_launcher.stop())); 
-
-
+    // // Set up a binding to change the speed of the intake command when the operator presses the X button
+    // m_driverController
+    // .x()
+    // .onTrue(
+    //     new PrepareSlowLaunch(m_launcher)
+    //         .withTimeout(LauncherConstants.kLauncherDelay)
+    //         .andThen(new SlowLaunchNote(m_launcher))
+    //         .withTimeout(LauncherConstants.kLauncherRunDuration)
+    //         .andThen(() -> m_launcher.stop())
+    //         .handleInterrupt(() -> m_launcher.stop())
+    // ); 
+    
+    //  *********************************
+    // BU FONKSIYONU TEKRAR KONTROL EDELIM 
+    //  *********************************
     // Set up a binding to run the intake command while the operator is pressing and holding the
     // left Bumper
-    m_operatorController.leftBumper().whileTrue(m_launcher.getIntakeCommand());
+    m_driverController
+    .leftBumper()
+    .whileTrue(m_launcher.getIntakeCommand());
   }
 
   /**
