@@ -32,8 +32,8 @@ public class SlowLaunchNote extends Command {
   @Override
   public void initialize() {
     // Set the wheels to launching speed
-    m_launcher.setLaunchWheel(kSlowLauncherSpeed);
-    m_launcher.setFeedWheel(kSlowLaunchFeederSpeed);
+    m_launcher.setLaunchWheel(kLauncherSlowLaunchSpeed);
+    m_launcher.setFeedWheel(kFeederSlowLaunchSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
