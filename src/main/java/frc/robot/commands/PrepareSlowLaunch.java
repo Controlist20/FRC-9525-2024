@@ -11,13 +11,13 @@ import frc.robot.subsystems.PWMLauncher;
 
 // import frc.robot.subsystems.CANLauncher;
 
-public class PrepareLaunch extends Command {
+public class PrepareSlowLaunch extends Command {
   PWMLauncher m_launcher;
 
   // CANLauncher m_launcher;
 
-  /** Creates a new PrepareLaunch. */
-  public PrepareLaunch(PWMLauncher launcher) {
+  /** Creates a new PrepareSlowLaunch. */
+  public PrepareSlowLaunch(PWMLauncher launcher) {
     // save the launcher system internally
     m_launcher = launcher;
 
@@ -29,7 +29,7 @@ public class PrepareLaunch extends Command {
   @Override
   public void initialize() {
     // Set launch wheel to speed, keep feed wheel at 0 to let launch wheel spin up.
-    m_launcher.setLaunchWheel(kLauncherLaunchSpeed);
+    m_launcher.setLaunchWheel(kLauncherSlowLaunchSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
