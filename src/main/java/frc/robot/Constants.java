@@ -68,13 +68,13 @@ public final class Constants {
 
   }
   public static class ClimberConstants{
-    public static final double kclimberID = 0;
+    public static final int kclimberID = 0;
 
-    public static final double kclimberAscendSpeed = 0.5;
-    public static final double kclimberDescendSpeed = -0.5;
+    public static final double kclimberAscendSpeed = 0.7;
+    public static final double kclimberDescendSpeed = -1;
 
-    public static final double kclimbMinHeight = 2;
-    public static final double kclimberMaxHeight = 7;
+    public static final double kclimberMinHeight = 40;
+    public static final double kclimberMaxHeight = 70;
 
   }
 }
