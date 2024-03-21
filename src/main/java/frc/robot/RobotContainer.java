@@ -17,6 +17,7 @@ import frc.robot.commands.LaunchNote;
 import frc.robot.commands.SlowLaunchNote;
 import frc.robot.commands.PrepareLaunch;
 import frc.robot.commands.PrepareSlowLaunch;
+import frc.robot.subsystems.PWMClimber;
 import frc.robot.subsystems.PWMDrivetrain;
 import frc.robot.subsystems.PWMLauncher;
 
@@ -36,6 +37,8 @@ public class RobotContainer {
   // private final CANDrivetrain m_drivetrain = new CANDrivetrain();
   private final PWMLauncher m_launcher = new PWMLauncher();
   // private final CANLauncher m_launcher = new CANLauncher();
+  
+  private final PWMClimber m_climber = new PWMClimber();
 
   /*The gamepad provided in the KOP shows up like an XBox controller if the mode switch is set to X mode using the
    * switch on the top.*/
@@ -129,8 +132,21 @@ public class RobotContainer {
     // Set up a binding to run the intake command while the operator is pressing and holding the
     // left Bumper
     m_driverController
-    .leftBumper()
-    .whileTrue(m_launcher.getIntakeCommand());
+      .leftBumper()
+      .whileTrue(m_launcher.getIntakeCommand());
+    m_driverController
+      .y()
+      .whileTrue(
+        m_climber
+        .ascend()
+        .handleInterrupt(() -> m_launcher.stop())
+      );
+    m_driverController
+      .b()
+      .whileTrue(m_climber
+      .descend()
+      .handleInterrupt(() -> m_launcher.stop())
+      );
   }
 
   /**
