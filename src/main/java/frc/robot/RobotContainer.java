@@ -73,7 +73,7 @@ public class RobotContainer {
     // Add commands to the autonomous command chooser
     m_chooser.setDefaultOption("Shoot and Sit Auto", m_shootAndSitAuto);
     m_chooser.setDefaultOption(
-        "Shoot and Drive Diagonal Backward Auto",
+        "Shoot and Drive DiagonalBackward Auto",
         m_shootAndDriveDiagonalBackwardAuto);
     m_chooser.setDefaultOption(
         "Shoot and Drive Straight Backward Auto",
